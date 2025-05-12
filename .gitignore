@@ -1,0 +1,38 @@
+# Entornos virtuales
+venv/
+.env
+.env.*
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+
+# Cachés de herramientas
+.mypy_cache/
+.pytest_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Archivos de cobertura y pruebas
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+
+# Configuración del IDE
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
+*.sqlite3
+*.db
+
+# Distribución
+dist/
+build/
+*.egg-info/
+
+# Otros
+.DS_Store
