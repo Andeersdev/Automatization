@@ -1,15 +1,21 @@
-import jwt
 from typing import Dict
+from datetime import datetime
+from jose import JWTError, jwt
 
 class JWT:
 
-    def __init__(self):
-        self.key = ''
+    SECRET_KEY = '6UXxGjYuHPsIXD4DVr7zuw812468NPbX'
+    ALGORITHM = 'HS256'
 
-    
-    def encode(self, payload:Dict[str,str]) -> bytes:
-        return jwt.encode(payload, self.key, algorithm='HS256')
+    def create_access_token(self, data: Dict[str,str], token_exp: datetime) -> str:
+        to_encode = data.copy()
+        to_encode.update({"exp": token_exp})
+        return jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
 
-    
-    def decode(self, encoded:str) -> Dict[str,str]:
-        return jwt.decode(encoded, self.key, algorithm='HS256')
+
+    def verify_token(self, token: str) -> Dict[str,str] | None:
+        try:
+            payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
+            return payload
+        except JWTError:
+            return None

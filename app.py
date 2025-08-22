@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from ariadne.asgi import GraphQL
-from src.Infrastructure.Graphql.Resolvers import schema
+from src.routes.auth_route import auth_router
+from src.routes.role_route import role_router
+from src.routes.user_route import user_router
+from src.routes.enterprise_route import enterprise_router
+from src.routes.task_type_route import task_type_router
+from src.routes.task_routes import task_router
 
 app = FastAPI()
 
@@ -13,17 +17,12 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-async def get_context(request: Request, _: dict):
-    authorization = request.headers.get('Authorization')
-    user_token = None
-    if authorization and authorization.startswith('Bearer '):
-        user_token = authorization.split(' ')[1]
-
-    headers: dict = request.headers
-    return {'request': request, 'headers': headers, 'user_token': user_token}
-
-graphql_app = GraphQL(schema, context_value=get_context, introspection=True)
-app.add_route('/graphql', graphql_app)
+app.include_router(auth_router)
+app.include_router(role_router)
+app.include_router(user_router)
+app.include_router(enterprise_router)
+app.include_router(task_type_router)
+app.include_router(task_router)
 
 
 # for /d /r . %d in (__pycache__) do @if exist "%d" rd /s /q "%d"
